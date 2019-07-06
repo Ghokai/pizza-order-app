@@ -11,12 +11,24 @@ module.exports = {
     path: path.join(__dirname, "/dist"),
     filename: "bundle.min.js"
   },
+  devServer: {
+    contentBase: path.join(__dirname, "dist"),
+    compress: true,
+    port: 3000,
+    historyApiFallback: true
+  },
+  devtool: "source-map",
+  resolve: {
+    // Add '.ts' and '.tsx' as resolvable extensions.
+    extensions: [".ts", ".tsx", ".js", ".json"]
+  },
   module: {
     rules: [
       {
         test: /\.tsx?$/,
         loader: "awesome-typescript-loader"
       },
+      { enforce: "pre", test: /\.js$/, loader: "source-map-loader" },
       {
         test: /\.css$/,
         use: ["style-loader", "css-loader"]
@@ -25,7 +37,9 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: "./src/index.html"
+      hash: true,
+      template: "./src/index.html",
+      filename: "./index.html" //relative to root of the application
     })
   ]
 };

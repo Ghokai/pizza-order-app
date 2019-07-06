@@ -1,26 +1,48 @@
 import * as express from "express";
-import { getManager } from "typeorm";
+import { getManager, Like } from "typeorm";
 import { PizzaOrder, OrderStatus, PizzaSize, PizzaType } from "../models";
 
 const orderRouter = express.Router();
 
-// middleware that is specific to this router
+const orderValidatorMiddleware = async (req, res, next) => {
+  const orderId = req.body.id ? req.body.id : req.params.id;
+  if (orderId || orderId > 0) {
+    const PizzaOrderRepo = getManager().getRepository(PizzaOrder);
+    const existingPizzaOrder = await PizzaOrderRepo.findOne({
+      relations: ["pizzaType", "pizzaSize", "orderStatus"],
+      where: { id: orderId }
+    });
 
-/*
-orderRouter.use(function timeLog(req, res, next) {
-  console.log("Time: ", Date.now());
+    if (existingPizzaOrder.orderStatus.id === 4) {
+      res
+        .status(401)
+        .send("You can't make changes on this record because it is completed!");
+      return;
+    }
+  }
   next();
-});
-*/
-// define the home page route
+};
+
 orderRouter.get("/", async (req, res) => {
   try {
+    const whereCondition: any = {};
+    //like filter on customername
+    if (req.query.customername) {
+      whereCondition.customerName = Like(`%${req.query.customername}%`);
+    }
+    //equal filter on order status
+    if (req.query.orderstatus && req.query.orderstatus > 0) {
+      whereCondition.orderStatus = req.query.orderstatus;
+    }
+
     const pizzaOrderRepo = getManager().getRepository(PizzaOrder);
     const orders = await pizzaOrderRepo.find({
-      relations: ["pizzaType", "pizzaSize", "orderStatus"]
+      relations: ["pizzaType", "pizzaSize", "orderStatus"],
+      where: whereCondition
     });
     res.json(orders);
   } catch (error) {
+    console.log(error);
     res.status(500).send(error);
   }
 });
@@ -42,29 +64,39 @@ orderRouter.get("/:id", async (req, res) => {
       res.status(404).send({ error: "record not exists" });
     }
   } catch (error) {
+    console.log(error);
     res.status(500).send(error);
   }
 });
 
-orderRouter.post("/", async (req, res) => {
+orderRouter.post("/", orderValidatorMiddleware, async (req, res) => {
   try {
-    console.log(req.body);
     const pizzaOrderRepo = getManager().getRepository(PizzaOrder);
-    const pizzaOrder = pizzaOrderRepo.create(req.body);
-    console.log(pizzaOrder);
+    const pizzaOrder = pizzaOrderRepo.create(req.body as Object);
+
+    //if order will create set initial date and status
+    if (!pizzaOrder.id || pizzaOrder.id < 1) {
+      pizzaOrder.orderDate = new Date();
+      const orderStatus = new OrderStatus("");
+      orderStatus.id = 1;
+      pizzaOrder.orderStatus = orderStatus;
+    }
+
     await pizzaOrderRepo.save(pizzaOrder);
     res.status(200).send();
   } catch (error) {
+    console.log(error);
     res.status(500).send(error);
   }
 });
 
-orderRouter.delete("/:id", async (req, res) => {
+orderRouter.delete("/:id", orderValidatorMiddleware, async (req, res) => {
   try {
     const pizzaOrderRepo = getManager().getRepository(PizzaOrder);
-    await pizzaOrderRepo.remove(req.params.id);
+    await pizzaOrderRepo.delete(req.params.id);
     res.status(200).send();
   } catch (error) {
+    console.log(error);
     res.status(500).send(error);
   }
 });
@@ -79,9 +111,10 @@ orderRouter.get("/formfields", async (req, res) => {
 
     const orderStatusesRepo = getManager().getRepository(OrderStatus);
     const orderStatuses = await orderStatusesRepo.find();
-    
+
     res.json({ pizzaSizes, pizzaTypes, orderStatuses });
   } catch (error) {
+    console.log(error);
     res.status(500).send(error);
   }
 });

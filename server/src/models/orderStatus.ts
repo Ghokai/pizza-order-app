@@ -5,6 +5,7 @@ export default class OrderStatus {
   constructor(status: string) {
     this.status = status;
   }
+
   @PrimaryGeneratedColumn()
   id: number;
 

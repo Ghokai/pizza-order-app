@@ -34,8 +34,8 @@ createConnection(typeOrmConfig)
     app.use("/statuses", orderStatusRouter);
     app.use("/formfields", formfieldsRouter);
 
-    app.listen(4200, function() {
-      console.log("pizza order server listening on port 4200!");
+    app.listen(4000, function() {
+      console.log("pizza order server listening on port 4000!");
     });
   })
   .catch(_ => console.log("***Can not connect to database!!!"));

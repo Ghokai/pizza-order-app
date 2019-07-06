@@ -1,4 +1,19 @@
 @import "~antd/dist/antd.css";
-.app {
-  background-color: blue;
+
+.header-link {
+  font-size: 30px;
+  margin-top: -8px;
+}
+.link-icon {
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.form-button {
+  margin-right: 10px;
+}
+
+.spinner {
+  margin-left: 45%;
+  margin-top: 20px;
 }

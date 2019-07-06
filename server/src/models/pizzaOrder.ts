@@ -23,23 +23,23 @@ export default class PizzaOrder {
   customerName: string;
 
   @Column("text", { nullable: false })
-  customerAdress: string;
+  customerAddress: string;
 
   @ManyToOne(type => OrderStatus, orderStatus => orderStatus.id, {
-    primary: false, // Use this as part of composite primary key (no need for auto inc primary key).
-    nullable: false // Can't use as part of composite primary key without this.
+    primary: false,
+    nullable: false
   })
   orderStatus: OrderStatus;
 
   @ManyToOne(type => PizzaSize, pizzaSize => pizzaSize.id, {
-    primary: false, // Use this as part of composite primary key (no need for auto inc primary key).
-    nullable: false // Can't use as part of composite primary key without this.
+    primary: false,
+    nullable: false
   })
   pizzaSize: PizzaSize;
 
   @ManyToOne(type => PizzaType, pizzaType => pizzaType.id, {
-    primary: false, // Use this as part of composite primary key (no need for auto inc primary key).
-    nullable: false // Can't use as part of composite primary key without this.
+    primary: false,
+    nullable: false
   })
   pizzaType: PizzaType;
 }

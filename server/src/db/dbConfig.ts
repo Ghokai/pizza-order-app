@@ -1,18 +1,21 @@
-// Config that is common to more than one part of the app.
-
 import { PostgresConnectionOptions } from "typeorm/driver/postgres/PostgresConnectionOptions";
-
+import {
+  dbHost,
+  dbName,
+  dbPassword,
+  dbPort,
+  dbType,
+  dbUser
+} from "../connectionInformations";
 import { PizzaOrder, PizzaSize, PizzaType, OrderStatus } from "../models";
 
-//postgres://postgres:password@db:5432/CardDeliveryDB
-
 const typeOrmConfig: PostgresConnectionOptions = {
-  type: "postgres",
-  host: "localhost",
-  port: 5432,
-  username: "postgres",
-  password: "password",
-  database: "PizzaOrderDB",
+  type: dbType,
+  host: dbHost,
+  port: dbPort,
+  username: dbUser,
+  password: dbPassword,
+  database: dbName,
   synchronize: true,
   logging: false,
   entities: [PizzaOrder, PizzaType, PizzaSize, OrderStatus]
