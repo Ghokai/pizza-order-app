@@ -12,3 +12,5 @@ docker-compose up
 
 **Client will be served on http://localhost:3000/**
 ![image](https://user-images.githubusercontent.com/11095906/60766634-47e56a80-a061-11e9-825a-b0246bab013f.png)
+
+![image](https://user-images.githubusercontent.com/11095906/60766655-af9bb580-a061-11e9-9b73-be949087d727.png)
