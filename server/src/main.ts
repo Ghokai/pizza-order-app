@@ -12,7 +12,8 @@ import orderStatusRouter from "./routes/orderStatusRoute";
 import { initDB } from "./db/dbSeeder";
 
 // Create a new express application instance
-
+console.log("Server will be started in 5 seconds..")
+setTimeout(()=>
 createConnection(typeOrmConfig)
   .then(conn => {
     const app: express.Application = express();
@@ -38,4 +39,5 @@ createConnection(typeOrmConfig)
       console.log("pizza order server listening on port 4000!");
     });
   })
-  .catch(_ => console.log("***Can not connect to database!!!"));
+  .catch(_ => console.log("***Can not connect to database!!!"))
+  ,5000);

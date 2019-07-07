@@ -4,10 +4,9 @@
   "description": "",
   "main": "src/main.ts",
   "scripts": {
-    "tsc": "tsc ./src/main.ts --outDir build",
+    "tsc": "tsc --experimentalDecorators ./src/main.ts --outDir build",
     "dev": "ts-node-dev --respawn --transpileOnly ./src/main.ts",
-    "prod": "tsc ./src/main.ts --outDir build && node ./build/main.js",
-    "dbseed": "npm run build && node build/db/seed.js"
+    "prod": "tsc --experimentalDecorators ./src/main.ts --outDir build && node ./build/main.js"  
   },
   "author": "",
   "license": "ISC",

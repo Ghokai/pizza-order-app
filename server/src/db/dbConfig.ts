@@ -1,6 +1,6 @@
 import { PostgresConnectionOptions } from "typeorm/driver/postgres/PostgresConnectionOptions";
 import {
-  dbHost,
+  dbHostContainer,
   dbName,
   dbPassword,
   dbPort,
@@ -11,7 +11,7 @@ import { PizzaOrder, PizzaSize, PizzaType, OrderStatus } from "../models";
 
 const typeOrmConfig: PostgresConnectionOptions = {
   type: dbType,
-  host: dbHost,
+  host: dbHostContainer,
   port: dbPort,
   username: dbUser,
   password: dbPassword,

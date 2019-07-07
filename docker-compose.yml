@@ -1,0 +1,32 @@
+version: "3.5"
+
+services:
+  pizza-order-db:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_DB: PizzaOrderDB
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - 5432:5432
+  pizza-order-server:
+    container_name: pizza-order-server
+    build:
+      context: .
+      dockerfile: server.Dockerfile
+    ports:
+      - "4000:4000"
+    environment:
+      - NODE_ENV=development
+    links:
+      - pizza-order-db  
+  pizza-order-client:
+    container_name: pizza-order-client
+    build:
+      context: .
+      dockerfile: client.Dockerfile
+    ports:
+      - "3000:80"  
+    links:
+      - pizza-order-server     
