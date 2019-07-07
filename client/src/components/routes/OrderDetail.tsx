@@ -46,7 +46,7 @@ const OrderDetail: React.FC = (props: any): React.ReactElement => {
   }
   return (
     <div>
-      <h1>Order Details for Order Id: {props.match.params.orderId}</h1>
+      <h1>{props.match.params.orderId ? `Order Details for Order Id: ${props.match.params.orderId}`:`New Order Form:`}</h1>
       <OrderForm
         onBack={() => props.history.push("/")}
         orderInfo={detail}

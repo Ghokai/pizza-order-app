@@ -77,7 +77,7 @@ orderRouter.post("/", orderValidatorMiddleware, async (req, res) => {
     //if order will create set initial date and status
     if (!pizzaOrder.id || pizzaOrder.id < 1) {
       pizzaOrder.orderDate = new Date();
-      const orderStatus = new OrderStatus("");
+      const orderStatus = new OrderStatus("Preparing");
       orderStatus.id = 1;
       pizzaOrder.orderStatus = orderStatus;
     }
@@ -95,24 +95,6 @@ orderRouter.delete("/:id", orderValidatorMiddleware, async (req, res) => {
     const pizzaOrderRepo = getManager().getRepository(PizzaOrder);
     await pizzaOrderRepo.delete(req.params.id);
     res.status(200).send();
-  } catch (error) {
-    console.log(error);
-    res.status(500).send(error);
-  }
-});
-
-orderRouter.get("/formfields", async (req, res) => {
-  try {
-    const pizzaSizeRepo = getManager().getRepository(PizzaSize);
-    const pizzaSizes = await pizzaSizeRepo.find();
-
-    const pizzaTypeRepo = getManager().getRepository(PizzaType);
-    const pizzaTypes = await pizzaTypeRepo.find();
-
-    const orderStatusesRepo = getManager().getRepository(OrderStatus);
-    const orderStatuses = await orderStatusesRepo.find();
-
-    res.json({ pizzaSizes, pizzaTypes, orderStatuses });
   } catch (error) {
     console.log(error);
     res.status(500).send(error);
