@@ -1,8 +1,8 @@
 # pizza-order-server-client
 pizza order system with react, express, typescript, typeorm and postgresql
 
-application simply runned with docker-compose
+application simply started with docker-compose
 
-  
-  docker-compose up
-  
+```
+docker-compose up
+```
